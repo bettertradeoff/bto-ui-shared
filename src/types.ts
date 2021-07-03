@@ -11,9 +11,15 @@ export interface CreateVueOptions {
   plugins?: Plugin[]
 }
 
+export interface RenderOptions {
+  attrs?: Data
+  route?: Route
+}
+
 export interface Options {
   name?: string
-  render(element: Element, attrs?: Data): void
+  route?: Route
+  render(element: Element, options?: RenderOptions): void
   onUnmount?(element: Element): void | boolean
 }
 
@@ -24,10 +30,6 @@ export interface Action {
 
 export interface Reducer<T> {
   (state: T, action: Action): T | Promise<T>
-}
-
-export interface CallbackFn<T> {
-  (state?: T): void
 }
 
 export interface ComputedGetter<T, S> {
@@ -51,4 +53,5 @@ export interface KoalaStore<S> {
 export interface Route {
   path?: string
   component?: string
+  children?: Route[]
 }

@@ -1,30 +1,14 @@
-import type { RouteRecordRaw } from 'vue-router'
 import { defineComponent, h, onBeforeUnmount, onMounted, onUnmounted, onUpdated, ref } from 'vue'
-import { Options, Route } from './types'
-
-export const createRoute = (route: Route, globalPath?: string) => {
-  const value: RouteRecordRaw = {
-    path: route.path,
-    component: async () => {
-      const component = await import(/* @vite-ignore */route.component)
-      return createComponent(component.default ?? globalThis[globalPath])
-    }
-  }
-  return value
-}
-
-export const createRoutes = (routes: Array<Route>) => {
-  return routes.map(route => createRoute(route))
-}
+import { Options } from './types'
 
 export const createComponent = (options: Options) => {
   return defineComponent({
     name: options.name,
-    setup(_, context) {
+    setup(_, { attrs }) {
       const el = ref()
 
       const render = () =>
-        options.render(el.value, context.attrs)
+        options.render(el.value, { attrs, route: options.route })
 
       const onUnmount = () => 
         el.value && options.onUnmount?.(el.value)
