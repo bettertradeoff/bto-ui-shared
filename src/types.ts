@@ -47,3 +47,8 @@ export interface KoalaStore<S> {
   store: Store<S, AnyAction>
   subscribe(listener: () => void): void
 }
+
+export interface Route {
+  path?: string
+  component?: string
+}
